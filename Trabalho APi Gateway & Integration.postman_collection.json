@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "0af18652-0093-4632-a9e5-2d4f17da4ea5",
+		"name": "Trabalho APi Gateway & Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19301356"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"123456\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/cliente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"codigo\": \"cliente001\",\r\n    \"nome\": \"Nome do Cliente\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/cliente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/v1/cliente/:codigo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/cliente/:codigo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"cliente",
+						":codigo"
+					],
+					"variable": [
+						{
+							"key": "codigo",
+							"value": "cliente001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/v1/cliente/",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/cliente/:codigo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"cliente",
+						":codigo"
+					],
+					"variable": [
+						{
+							"key": "codigo",
+							"value": "cliente001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/cliente/:codigo/endereco",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"indice\": \"1\",\r\n    \"logradouro\": \"Rua Exemplo\",\r\n    \"numero\": \"123\",\r\n    \"complemento\": \"Apto 101\",\r\n    \"cidade\": \"Cidade Exemplo\",\r\n    \"estado\": \"Estado Exemplo\",\r\n    \"cep\": \"12345-678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/cliente/:codigo/endereco",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"cliente",
+						":codigo",
+						"endereco"
+					],
+					"variable": [
+						{
+							"key": "codigo",
+							"value": "cliente001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v1/cliente/:codigo/endereco/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"indice\": \"1\",\r\n    \"logradouro\": \"Rua Exemplo\",\r\n    \"numero\": \"123\",\r\n    \"complemento\": \"Apto 101\",\r\n    \"cidade\": \"Cidade Exemplo\",\r\n    \"estado\": \"Estado Exemplo\",\r\n    \"cep\": \"12345-678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/cliente/:codigo/endereco/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"cliente",
+						":codigo",
+						"endereco",
+						""
+					],
+					"variable": [
+						{
+							"key": "codigo",
+							"value": "cliente001"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
