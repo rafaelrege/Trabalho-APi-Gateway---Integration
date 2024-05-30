@@ -11,7 +11,7 @@ CREATE TABLE `cliente` (
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `endereco` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id`),
   KEY `cliente_codigo` (`cliente_codigo`),
   CONSTRAINT `endereco_ibfk_1` FOREIGN KEY (`cliente_codigo`) REFERENCES `cliente` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 LOCK TABLES `cliente` WRITE;
 INSERT INTO `cliente` VALUES (1,'cliente001','Nome do Cliente');
