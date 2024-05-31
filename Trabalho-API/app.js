@@ -1,12 +1,14 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2');
+const { Pool } = require('pg');
+
 const app = express();
 const port = 3000;
 
 const SECRET_KEY = 'SECRET';
 app.use(bodyParser.json());
+
 function authenticateJWT(req, res, next) {
     const token = req.headers.authorization;
 
@@ -22,8 +24,61 @@ function authenticateJWT(req, res, next) {
         next();
     });
 }
-// Coloca os dados do banco de dados no meu caso prof criei um root e coloquei o nome do banco
-const db = mysql.createConnection({ host: 'localhost', user: 'rafael', password: '123456', database: 'bancodedadostrabalhomba'});
+
+const pool = new Pool({
+    user: 'kong',
+    host: 'kong-database',
+    database: 'postgres',
+    password: 'kong', 
+    port: 5432,
+});
+
+async function initializeDatabase() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS cliente (
+                id SERIAL PRIMARY KEY,
+                codigo VARCHAR(255) NOT NULL,
+                nome VARCHAR(255) NOT NULL,
+                UNIQUE (codigo)
+            );
+            
+            CREATE TABLE IF NOT EXISTS endereco (
+                id SERIAL PRIMARY KEY,
+                cliente_codigo VARCHAR(255) REFERENCES cliente (codigo),
+                indice INT NOT NULL,
+                logradouro VARCHAR(255) NOT NULL,
+                numero VARCHAR(50) NOT NULL,
+                complemento VARCHAR(255),
+                cidade VARCHAR(255) NOT NULL,
+                estado VARCHAR(50) NOT NULL,
+                cep VARCHAR(20) NOT NULL
+            );
+        `);
+
+
+        const result = await pool.query(`SELECT * FROM cliente WHERE codigo = 'cliente001'`);
+        if (result.rows.length === 0) {
+            await pool.query(`
+                INSERT INTO cliente (codigo, nome) VALUES ('cliente001', 'Nome do Cliente');
+                INSERT INTO endereco (cliente_codigo, indice, logradouro, numero, complemento, cidade, estado, cep) 
+                VALUES 
+                ('cliente001', 1, 'Rua Exemplo', '123', 'Apto 101', 'Cidade Exemplo', 'Estado Exemplo', '12345-678'),
+                ('cliente001', 2, 'Rua Exemplo 2', '456', 'Apto 202', 'Cidade Exemplo', 'Estado Exemplo', '12345-678');
+            `);
+        }
+    } catch (err) {
+        console.error('Erro ao inicializar o banco de dados:', err);
+        process.exit(1); 
+    }
+}
+
+initializeDatabase().then(() => {
+    app.listen(port, () => {
+        console.log(`Servidor rodando na porta ${port}`);
+    });
+});
+
 app.post('/api/v1/login', (req, res) => {
     const { username, password } = req.body;
     const user = { id: 1, username: 'admin', password: '123456' };
@@ -35,9 +90,10 @@ app.post('/api/v1/login', (req, res) => {
 
     res.status(401).send({ message: 'Usuário ou senha incorretos' });
 });
+
 app.post('/api/v1/cliente', authenticateJWT, (req, res) => {
     const { codigo, nome } = req.body;
-    db.query('INSERT INTO Cliente (codigo, nome) VALUES (?, ?)', [codigo, nome], (err, result) => {
+    pool.query('INSERT INTO cliente (codigo, nome) VALUES ($1, $2)', [codigo, nome], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: 'Erro ao criar o cliente' });
@@ -45,42 +101,45 @@ app.post('/api/v1/cliente', authenticateJWT, (req, res) => {
         res.status(201).send({ message: 'Cliente criado com sucesso' });
     });
 });
+
 app.get('/api/v1/cliente/:codigo', authenticateJWT, (req, res) => {
     const codigo = req.params.codigo;
-    db.query('SELECT * FROM Cliente WHERE codigo = ?', [codigo], (err, result) => {
+    pool.query('SELECT * FROM cliente WHERE codigo = $1', [codigo], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: 'Erro ao buscar o cliente' });
         }
-        if (result.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).send({ message: 'Cliente não encontrado' });
         }
-        const cliente = result[0];
+        const cliente = result.rows[0];
         res.status(200).send(cliente);
     });
 });
+
 app.get('/api/v1/cliente', authenticateJWT, (req, res) => {
-    db.query('SELECT * FROM Cliente', (err, result) => {
+    pool.query('SELECT * FROM cliente', (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: 'Erro ao buscar os clientes' });
         }
-        res.status(200).send(result);
+        res.status(200).send(result.rows);
     });
 });
+
 app.post('/api/v1/cliente/:codigo/endereco', authenticateJWT, (req, res) => {
     const codigoCliente = req.params.codigo;
     const { indice, logradouro, numero, complemento, cidade, estado, cep } = req.body;
-    db.query('SELECT * FROM Cliente WHERE codigo = ?', [codigoCliente], (err, result) => {
+    pool.query('SELECT * FROM cliente WHERE codigo = $1', [codigoCliente], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: 'Erro ao verificar o cliente' });
         }
 
-        if (result.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).send({ message: 'Cliente não encontrado' });
         }
-        db.query('INSERT INTO Endereco (cliente_codigo, indice, logradouro, numero, complemento, cidade, estado, cep) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        pool.query('INSERT INTO endereco (cliente_codigo, indice, logradouro, numero, complemento, cidade, estado, cep) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
             [codigoCliente, indice, logradouro, numero, complemento, cidade, estado, cep],
             (err, result) => {
                 if (err) {
@@ -91,25 +150,23 @@ app.post('/api/v1/cliente/:codigo/endereco', authenticateJWT, (req, res) => {
             });
     });
 });
+
 app.get('/api/v1/cliente/:codigo/endereco/', authenticateJWT, (req, res) => {
     const codigoCliente = req.params.codigo;
-    db.query('SELECT * FROM Cliente WHERE codigo = ?', [codigoCliente], (err, resultCliente) => {
+    pool.query('SELECT * FROM cliente WHERE codigo = $1', [codigoCliente], (err, resultCliente) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: 'Erro ao verificar o cliente' });
         }
-        if (resultCliente.length === 0) {
+        if (resultCliente.rows.length === 0) {
             return res.status(404).send({ message: 'Cliente não encontrado' });
         }
-        db.query('SELECT * FROM Endereco WHERE cliente_codigo = ?', [codigoCliente], (err, resultEnderecos) => {
+        pool.query('SELECT * FROM endereco WHERE cliente_codigo = $1', [codigoCliente], (err, resultEnderecos) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send({ message: 'Erro ao buscar os endereços' });
             }
-            res.status(200).send(resultEnderecos);
+            res.status(200).send(resultEnderecos.rows);
         });
     });
-});
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
 });
