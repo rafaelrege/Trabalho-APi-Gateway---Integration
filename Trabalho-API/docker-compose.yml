@@ -10,7 +10,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./criarbancoPostgreSQL.sql:/docker-entrypoint-initdb.d/criarbancoPostgreSQL.sql
       - kong-database-data:/var/lib/postgresql/data
 
   kong-migrations:
@@ -43,6 +42,16 @@ services:
       - kong-database
       - kong-migrations
 
+  konga:
+    image: pantsel/konga:latest
+    restart: always
+    ports:
+      - 1337:1337
+    environment:
+      NODE_ENV: "production"
+    depends_on:
+      - kong
+
   node-service:
     image: node:14
     volumes:
@@ -54,7 +63,6 @@ services:
       - "3000:3000"
     depends_on:
       - kong
-
 
 volumes:
   kong-database-data:
