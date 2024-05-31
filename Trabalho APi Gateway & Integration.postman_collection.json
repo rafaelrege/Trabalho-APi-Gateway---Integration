@@ -47,7 +47,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNzExNjA1MiwiZXhwIjoxNzE3MTE5NjUyfQ.a8ho8B9__8GaC7Jma7VRaTkWj3PTJdIsOupmgAdq8H8",
 							"type": "string"
 						}
 					]
@@ -56,7 +56,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"codigo\": \"cliente001\",\r\n    \"nome\": \"Nome do Cliente\"\r\n}\r\n",
+					"raw": "{\r\n    \"codigo\": \"cliente002\",\r\n    \"nome\": \"Nome do Cliente\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,7 +87,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNzExNjA1MiwiZXhwIjoxNzE3MTE5NjUyfQ.a8ho8B9__8GaC7Jma7VRaTkWj3PTJdIsOupmgAdq8H8",
 							"type": "string"
 						}
 					]
@@ -125,7 +125,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNzExNjA1MiwiZXhwIjoxNzE3MTE5NjUyfQ.a8ho8B9__8GaC7Jma7VRaTkWj3PTJdIsOupmgAdq8H8",
 							"type": "string"
 						}
 					]
@@ -133,7 +133,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/v1/cliente/:codigo",
+					"raw": "http://localhost:3000/api/v1/cliente/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -143,13 +143,7 @@
 						"api",
 						"v1",
 						"cliente",
-						":codigo"
-					],
-					"variable": [
-						{
-							"key": "codigo",
-							"value": "cliente001"
-						}
+						""
 					]
 				}
 			},
@@ -163,7 +157,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNzExNjA1MiwiZXhwIjoxNzE3MTE5NjUyfQ.a8ho8B9__8GaC7Jma7VRaTkWj3PTJdIsOupmgAdq8H8",
 							"type": "string"
 						}
 					]
@@ -214,7 +208,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjQyNTYwNCwiZXhwIjoxNzE2NDI5MjA0fQ.DunghrwNTOarFtsqMx-RyE_vQMNfzApibgnRxkgqKSw",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNzExNjA1MiwiZXhwIjoxNzE3MTE5NjUyfQ.a8ho8B9__8GaC7Jma7VRaTkWj3PTJdIsOupmgAdq8H8",
 							"type": "string"
 						}
 					]
